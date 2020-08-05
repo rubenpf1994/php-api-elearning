@@ -1,6 +1,6 @@
 <?php
 
-    include('conexion/conexion.php');
+    require_once('../conexion/conexion.php');
 
     class UsersDao{
         private static $conexion;
@@ -10,10 +10,24 @@
             self::$conexion = Conexion::getInstance();
         }
 
+        
+
         //CREATE
         public function createUser($user){
-            var_dump($user);
-            return true;
+            $insertQuery = "INSERT INTO users (name, password, email) VALUES (?, ?, ?)";
+            if($stmt = self::$conexion->prepare($insertQuery)){
+                $name= $user->getName();
+                $password=$user->getPassword();
+                $email=$user->getEmail();
+                $stmt -> bind_param('sss', $name, $password, $email);
+                
+                if($stmt->execute()){
+                    return true;
+                }
+            }
+            echo self::$conexion->errno . ' ' . self::$conexion->error;
+            return false;
+            
         }
 
         //READ
