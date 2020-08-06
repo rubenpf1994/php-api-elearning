@@ -11,12 +11,13 @@
     $userdao = new UsersDao();
     $user = new User();
     
-    
-    if($userdao->createUser($user)){
-        $message = array('status'=> '200', 'message' => 'Employee created successfully.');
+    $id = isset($_GET['id'])?$_GET['id']:die;
+
+    if($userdao->deleteUser($id)){
+        $message = array('status'=> '200', 'message' => 'Employee deleted successfully.');
         echo json_encode($message);
     } else{
-        $message = array('status'=> '500', 'message' => 'Employee could not created successfully.');
+        $message = array('status'=> '500', 'message' => 'Employee could not deleted successfully.');
         echo json_encode($message);
     }
 ?>
